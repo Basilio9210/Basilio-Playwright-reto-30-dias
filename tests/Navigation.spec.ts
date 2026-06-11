@@ -18,7 +18,7 @@ test('Check Menu Options', async ({ page }) => {
 
     // Validación manual del primer ítem del menú
     const firstItemText = await leftMenuItems.first().innerText();
-    if (firstItemText.trim() === 'Admin1') {
+    if (firstItemText.trim() === 'Admin') {
         console.log('✅ Admin is the expected first menu item.');
     } else {
         console.error(`❌ Error: The first item is "${firstItemText}", not the expected "Admin"`);

@@ -80,6 +80,7 @@ test('Navigate left Menu', async ({ page }) => {
 
         if (menuItemText !== 'Maintenance') {
 
+           
             await menuItem.click();
 
         }

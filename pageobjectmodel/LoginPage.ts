@@ -1,4 +1,4 @@
-import { Locator, Page } from  "@playwright/test";
+import { Locator, Page, expect } from  "@playwright/test";
 
 export class LoginPage{
 
@@ -6,6 +6,7 @@ export class LoginPage{
     readonly usernameInput: Locator
     readonly passwordnameInput: Locator
     readonly loginButton: Locator
+    readonly errorMessage: Locator
    
     constructor(page: Page) {
         
@@ -13,6 +14,7 @@ export class LoginPage{
         this.usernameInput = page.getByRole('textbox', { name: 'Username' })
         this.passwordnameInput = page.getByRole('textbox', { name: 'Password' })
         this.loginButton = page.getByRole('button', { name: 'Login' })
+        this.errorMessage = page.getByTestId('error-message');
         
     }
 
@@ -25,4 +27,10 @@ export class LoginPage{
 
 
     }
+
+    async expectError(message: string) {
+    
+        await expect(this.errorMessage).toHaveText(message);
+
+  }
 }

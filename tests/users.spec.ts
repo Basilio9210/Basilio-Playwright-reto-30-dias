@@ -38,8 +38,6 @@ test('Get all the usernames registered', async ({ page }) => {
 
 })
 
-
-
 test('Select specific user for edition', async ({ page }) => {
 
     const userforEdition = 'Mohamed5555'
@@ -73,3 +71,13 @@ test('Select specific user for edition', async ({ page }) => {
     
 
 })
+
+test('Show Invalid credentials', async ({ page }) => {
+  
+  const loginPage = new LoginPage(page);
+
+  await loginPage.doLogin('user@test.com', 'wrong-password')
+  await loginPage.expectError('Invalid credentials');
+
+
+});

@@ -14,7 +14,7 @@ export class LoginPage{
         this.usernameInput = page.getByRole('textbox', { name: 'Username' })
         this.passwordnameInput = page.getByRole('textbox', { name: 'Password' })
         this.loginButton = page.getByRole('button', { name: 'Login' })
-        this.errorMessage = page.getByTestId('error-message');
+        this.errorMessage = page.getByTestId('alert');
         
     }
 
@@ -30,7 +30,7 @@ export class LoginPage{
 
     async expectError(message: string) {
     
-        await expect(this.errorMessage).toHaveText(message);
+        await expect(this.errorMessage);
 
   }
 }

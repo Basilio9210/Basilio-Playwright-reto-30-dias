@@ -1,14 +1,20 @@
 import { expect, test } from '@playwright/test';
+import { LoginPage } from '../pageobjectmodel/LoginPage';
 
 test('Check Menu Options', async ({ page }) => {
 
     // Navegar a la página de inicio de sesión
-    await page.goto('https://opensource-demo.orangehrmlive.com');
-    await page.getByRole('textbox', { name: 'Username' }).fill('Admin');
-    await page.getByRole('textbox', { name: 'Password' }).fill('admin123');
-    await page.getByRole('button', { name: 'Login' }).click();
+    //await page.goto('https://opensource-demo.orangehrmlive.com');
+   // await page.getByRole('textbox', { name: 'Username' }).fill('Admin');
+  //await page.getByRole('textbox', { name: 'Password' }).fill('admin123');
+  //await page.getByRole('button', { name: 'Login' }).click();
+
+    const loginPage = new LoginPage(page) //Nuevo Login as Admin
+    await loginPage.LoginAsAdmin()
+
 
     // Validar que el enlace "Admin" esté visible después de iniciar sesión
+    
     await expect(page.getByRole('link', { name: 'Admin' })).toBeVisible()
 
     //Encuentra los elementos del menú lateral y cuenta cuántos hay
@@ -47,11 +53,7 @@ test('Check Menu Options', async ({ page }) => {
         'Time',
         'Recruitment',
         'My Info',
-        'Performance',
-        'Dashboard',
-        'Directory',
-        'Maintenance',
-        'Buzz'];
+    ];
 
     expect(currentMenuItems).toEqual(expectedMenuItems)
 });

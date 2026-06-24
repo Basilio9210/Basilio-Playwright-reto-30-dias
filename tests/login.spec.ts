@@ -3,10 +3,14 @@ import { LoginPage } from '../pageobjectmodel/LoginPage';
 import { SideMenuOption, Sidepanel } from '../components/Sidepanel';
 //page =  feature
 
+
+
+
+
 test('login to HRM', async ({ page }) => {
 
     const loginPage = new LoginPage(page)
-    await loginPage.doLogin('Admin', 'admin123')
+    await loginPage.LoginAsAdmin()
 
     const sidepanel = new Sidepanel(page)
     await sidepanel.ClickOnOption(SideMenuOption.ADMIN)
@@ -20,5 +24,14 @@ test('login to HRM', async ({ page }) => {
     await sidepanel.ClickOnOption(SideMenuOption.DIRECTORY)
     await sidepanel.ClickOnOption(SideMenuOption.CLAIM)
     await sidepanel.ClickOnOption(SideMenuOption.BUZZ)
+
+})
+
+
+test('login As Employee', async ({ page }) => {
+
+    const loginPage = new LoginPage(page)
+    await loginPage.LoginAsEmployee()
+
 
 })

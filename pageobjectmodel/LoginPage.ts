@@ -1,4 +1,5 @@
 import { Locator, Page, expect } from  "@playwright/test";
+import { Environment } from "../config/Environment";
 
 export class LoginPage{
 
@@ -25,12 +26,21 @@ export class LoginPage{
     await this.passwordnameInput.fill(password)
     await this.loginButton.click()
 
-
     }
 
     async expectError(message: string) {
     
         await expect(this.errorMessage);
 
+  }
+
+  async LoginAsAdmin(){
+    await this.doLogin(Environment.ADMIN_USERNAME, Environment.ADMIN_PASSWORD)
+  }
+
+
+
+  async LoginAsEmployee(){
+    await this.doLogin(Environment.EMPLOYEE_USERNAME, Environment.EMPLOYEE_PASSWORD)
   }
 }

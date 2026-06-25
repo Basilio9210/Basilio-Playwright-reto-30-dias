@@ -1,5 +1,7 @@
 import { expect, test } from '@playwright/test';
 import { LoginPage } from '../pageobjectmodel/LoginPage';
+import { TopBarMenu } from '../components/top-bar-menu/TopBarMenu';
+import { SideMenuOption, Sidepanel } from '../components/Sidepanel';
 
 test('Check Menu Options', async ({ page }) => {
 
@@ -207,3 +209,21 @@ test('Check All Time Reports Links', async ({ page }) => {
 
     }
 })
+
+test('Testing topbar menu', async({page})=>{
+
+    const loginPage = new LoginPage(page)
+    await loginPage.LoginAsAdmin()
+
+    const sidepanel = new Sidepanel(page)
+    await sidepanel.ClickOnOption(SideMenuOption.ADMIN)
+
+
+    const topBarMenu = new TopBarMenu(page)
+    await topBarMenu.job.clickOnJobTitles()
+    await topBarMenu.job.clickOnPayGrades()
+    
+    await topBarMenu.userManagment.clickOnUserManagement()
+    // Additional interactions can be added here
+});
+

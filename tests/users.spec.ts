@@ -1,5 +1,6 @@
 import { expect, test } from "@playwright/test"
 import { LoginPage } from "../pageobjectmodel/LoginPage"
+import { SideMenuOption, Sidepanel } from "../components/Sidepanel"
 
 test('Get all the usernames registered', async ({ page }) => {
 
@@ -81,3 +82,21 @@ test('Show Invalid credentials', async ({ page }) => {
 
 
 });
+
+test('Check User Roles Options', async({page})=>{
+
+
+    const expectedRoleOptions = [ '-- Select --', 'Admin', 'ESS']
+    const loginPage = new LoginPage(page)
+    await loginPage.LoginAsAdmin();
+
+    const sidepanel = new Sidepanel(page)
+    await sidepanel.ClickOnOption(SideMenuOption.ADMIN)
+
+    await page.locator("//label[contains(.,'User Role')]/parent::div/following-sibling::div").click()
+    const currentUserRoleOptions = await page.getByRole('listbox').getByRole('option').allInnerTexts()
+
+    console.log(currentUserRoleOptions)
+
+    expect(currentUserRoleOptions).toEqual(expectedRoleOptions)
+})

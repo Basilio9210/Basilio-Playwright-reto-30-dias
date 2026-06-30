@@ -7,11 +7,35 @@ import { SideMenuOption, Sidepanel } from '../components/Sidepanel';
 
 
 
-test('login to HRM', async ({ page }) => {
+test('login to HRM with Auth', async ({ page }) => {
 
-    const loginPage = new LoginPage(page)
-    await loginPage.LoginAsAdmin()
+    /*const loginPage = new LoginPage(page)
+    await loginPage.LoginAsAdmin()*/
 
+    await page.goto("/web/index.php/dashboard/index")
+
+    const sidepanel = new Sidepanel(page)
+    await sidepanel.ClickOnOption(SideMenuOption.ADMIN)
+    await sidepanel.ClickOnOption(SideMenuOption.PIM)
+    await sidepanel.ClickOnOption(SideMenuOption.LEAVE)
+    await sidepanel.ClickOnOption(SideMenuOption.TIME)
+    await sidepanel.ClickOnOption(SideMenuOption.RECRUITMENT)
+    await sidepanel.ClickOnOption(SideMenuOption.MY_INFO)
+    await sidepanel.ClickOnOption(SideMenuOption.PERFORMANCE)
+    await sidepanel.ClickOnOption(SideMenuOption.DASHBOARD)
+    await sidepanel.ClickOnOption(SideMenuOption.DIRECTORY)
+    await sidepanel.ClickOnOption(SideMenuOption.CLAIM)
+    await sidepanel.ClickOnOption(SideMenuOption.BUZZ)
+
+})
+
+
+test('login to HRM without Auth', async ({ page }) => {
+
+    /*const loginPage = new LoginPage(page)
+    await loginPage.LoginAsAdmin()*/
+
+    await page.goto("/web/index.php/dashboard/index")
     const sidepanel = new Sidepanel(page)
     await sidepanel.ClickOnOption(SideMenuOption.ADMIN)
     await sidepanel.ClickOnOption(SideMenuOption.PIM)

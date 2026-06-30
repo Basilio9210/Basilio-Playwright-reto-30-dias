@@ -1,6 +1,7 @@
 import { expect, test } from "@playwright/test"
 import { LoginPage } from "../pageobjectmodel/LoginPage"
 import { SideMenuOption, Sidepanel } from "../components/Sidepanel"
+import { asyncWrapProviders } from "node:async_hooks"
 
 test('Get all the usernames registered', async ({ page }) => {
 
@@ -99,4 +100,40 @@ test('Check User Roles Options', async({page})=>{
     console.log(currentUserRoleOptions)
 
     expect(currentUserRoleOptions).toEqual(expectedRoleOptions)
+});
+
+
+test(('Filter User Admin'), async({page})=>{
+
+    const loginPage = new LoginPage(page)
+    await loginPage.LoginAsAdmin();
+
+    const sidepanel = new Sidepanel(page)
+    await sidepanel.ClickOnOption(SideMenuOption.ADMIN)
+
+    const allBodyRows = page.getByRole('table').getByRole('rowgroup').nth(1).getByRole('row')
+
+    //Filas  que contienen rol Admin
+    const currentAdminRows= allBodyRows.filter({
+        has: page.getByRole('cell').nth(2).getByText('Admin')
+    })
+
+    const expectedAdminCount = await currentAdminRows.count()
+    console.log('Admin users before filtering', expectedAdminCount)
+
+    //Aplicar filtro
+    await page.locator("//label[contains(.,'User Role')]/parent::div/following-sibling::div").click()
+    await page.getByRole('listbox').getByRole('option', {name: 'Admin'}).click();
+    await page.getByRole('button', {name: 'Search'}).click()
+
+    //Tabla filtrada deberia tener la misma cantidad  que encontramos
+
+    await expect(allBodyRows).toHaveCount(expectedAdminCount)
+
+    for(let i=0; i<expectedAdminCount; i++){
+
+        await expect(allBodyRows.nth(i).getByRole('cell').nth(2)).toContainText('Admin')
+    }
+    
+
 })

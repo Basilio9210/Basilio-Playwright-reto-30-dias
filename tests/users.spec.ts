@@ -137,3 +137,114 @@ test(('Filter User Admin'), async({page})=>{
     
 
 })
+
+
+test('Capture all numeric values', async ({ page }) => {
+
+    await page.goto('/web/index.php/claim/viewAssignClaim')
+    const allBodyRows = page.getByRole('table').getByRole('rowgroup').nth(1).getByRole('row')
+    const amounts: number[] = []
+
+    const rowCount = await allBodyRows.count()
+    console.log('Number of rows: ', rowCount)
+
+    for (let i=0; i<rowCount; i++) {
+
+        const amountCell = allBodyRows.nth(i).getByRole('cell').nth(7)
+        const amountText = await amountCell.textContent()
+        console.log('This is the amount in text: ', amountText);
+
+        if (amountText === null) {
+            continue
+        }
+
+        const convertedNumber = parseFloat(amountText?.replace(/,/g, '').trim())
+        amounts.push(convertedNumber)
+
+    }
+
+    console.log(amounts)
+
+    let total = 0
+
+    for (let amount of amounts) {
+
+        total += amount
+    }
+
+    console.log("Total is: ", total)
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+test('Debug table structure', async ({ page }) => {
+    await page.goto('/web/index.php/claim/viewAssignClaim')
+    
+    // Esperar que la página cargue completamente
+    await page.waitForLoadState('networkidle')
+    
+    // Ver qué clases usa OrangeHRM para la tabla
+    const tableHTML = await page.locator('.oxd-table').innerHTML()
+    console.log(tableHTML)
+});
+
+test('Calculate and Operate with all numeric values', async ({ page }) => {
+
+    await page.goto('/web/index.php/claim/viewAssignClaim')
+    const allBodyRows = page.getByRole('table').getByRole('rowgroup').nth(1).getByRole('row')
+    const amounts: number[] = []
+
+    const rowCount = await allBodyRows.count()
+    console.log('Number of rows: ', rowCount)
+
+    for (let i = 0; i < rowCount; i++) {
+
+        const amountCell = allBodyRows.nth(i).getByRole('cell').nth(7)
+        const amountText = await amountCell.textContent()
+        console.log('This is the amount in text: ', amountText)
+
+        if (amountText === null) continue
+
+        const convertedNumber = parseFloat(amountText.replace(/,/g, '').trim())
+
+        // ✅ Validar que sea un número válido antes de agregarlo
+        if (!isNaN(convertedNumber)) {
+            amounts.push(convertedNumber)
+        }
+    }
+
+    // ─── Cálculos ───────────────────────────────────────────────
+
+    const sum     = amounts.reduce((acc, val) => acc + val, 0)
+    const average = sum / amounts.length
+    const max     = Math.max(...amounts)
+    const min     = Math.min(...amounts)
+
+    console.log('Amounts array : ', amounts)
+    console.log('Sum           : ', sum.toFixed(2))
+    console.log('Average       : ', average.toFixed(2))
+    console.log('Max           : ', max.toFixed(2))
+    console.log('Min           : ', min.toFixed(2))
+
+    // ─── Assertions ─────────────────────────────────────────────
+
+    expect(amounts.length).toBeGreaterThan(0)
+    expect(sum).toBeCloseTo(8550.44, 2)      // 7300.32 + 1250.12 + 0.00
+    expect(average).toBeCloseTo(2850.15, 2)  // sum / 3
+    expect(max).toBeCloseTo(7300.32, 2)
+    expect(min).toBeCloseTo(0, 2)
+})

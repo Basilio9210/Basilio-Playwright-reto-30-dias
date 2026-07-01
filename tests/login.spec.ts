@@ -1,4 +1,4 @@
-import {expect, test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 import { LoginPage } from '../pageobjectmodel/LoginPage';
 import { SideMenuOption, Sidepanel } from '../components/Sidepanel';
 //page =  feature
@@ -58,4 +58,6 @@ test('login As Employee', async ({ page }) => {
     await loginPage.LoginAsEmployee()
 
 
-})
+});
+
+

@@ -1,4 +1,5 @@
 import { Page, expect } from "@playwright/test";
+import { UserModel } from "../Models/UserModel";
 
 export class AddNewUserPage {
 
@@ -73,5 +74,22 @@ export class AddNewUserPage {
         
             await expect (this.page.locator('p.oxd-text--toast-message'))
             .toHaveText('Successfully Saved')
+    }
+
+    async addNewUser(user: UserModel){
+
+    await this.clickOnAdd()
+    await this.selectUserRole(user.role)
+    await this.selectEmployee(user.employee)
+    await this.selectStatus(user.status)
+    await this.enterUserName(user.username)
+    await this.enterPassword(user.password)
+    await this.enterConfirmPassword(user.confirmPassword)
+    await this.clickOnSave()
+
+    }
+
+    async addValidUser(){
+
     }
 }

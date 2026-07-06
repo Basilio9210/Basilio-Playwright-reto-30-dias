@@ -5,6 +5,7 @@ import { asyncWrapProviders } from "node:async_hooks"
 import { TopBarMenu } from "../components/top-bar-menu/TopBarMenu"
 import { Navigate } from "../pageobjectmodel/Navigate"
 import { AddNewUserPage } from "../pageobjectmodel/AddNewUser"
+import { UserModel } from "../Models/UserModel"
 
 test('Get all the usernames registered', async ({ page }) => {
 
@@ -195,15 +196,18 @@ test('Add new user', async({page})=>{
     const topBarMenu = new TopBarMenu(page)
     await topBarMenu.userManagment.clickOnUserOption()
 
+    const userToAdd: UserModel = {
+
+        username : randonUserName,
+        employee : employeeToSearch,
+        password : password,
+        confirmPassword : password,
+        role :'ESS',
+        status : 'Enabled'
+    }
+    
     const addNewUser = new AddNewUserPage(page)
-    await addNewUser.clickOnAdd()
-    await addNewUser.selectUserRole('ESS')
-    await addNewUser.selectEmployee(employeeToSearch)
-    await addNewUser.selectStatus('Enabled')
-    await addNewUser.enterUserName(randonUserName)
-    await addNewUser.enterPassword(password)
-    await addNewUser.enterConfirmPassword(password)
-    await addNewUser.clickOnSave()
+    await addNewUser.addNewUser(userToAdd)
     await addNewUser.checkUserWasAdded()
 
    

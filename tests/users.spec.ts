@@ -6,6 +6,7 @@ import { TopBarMenu } from "../components/top-bar-menu/TopBarMenu"
 import { Navigate } from "../pageobjectmodel/Navigate"
 import { AddNewUserPage } from "../pageobjectmodel/AddNewUser"
 import { UserModel } from "../Models/UserModel"
+import { UserFactory } from "../Factory/UserFactory"
 
 test('Get all the usernames registered', async ({ page }) => {
 
@@ -183,10 +184,8 @@ test('Capture all numeric values', async ({ page }) => {
 
 test('Add new user', async({page})=>{
 
-    const randonUserName = 'pepe' + crypto.randomUUID().slice(0, 8)
-    const password = 'R4andom123..*'
-    const employeeToSearch = 'Qwerty LName'
-
+  
+    
     const navigate = new Navigate(page)
     await navigate.toDashboard()
 
@@ -196,7 +195,23 @@ test('Add new user', async({page})=>{
     const topBarMenu = new TopBarMenu(page)
     await topBarMenu.userManagment.clickOnUserOption()
 
-    const userToAdd: UserModel = {
+    const adminUser = UserFactory.createAdmin({
+           
+      employee: 'Qwerty LName'
+    })
+  
+    const addNewUser = new AddNewUserPage(page)
+    await addNewUser.addNewUser(adminUser)
+    await addNewUser.checkUserWasAdded()
+
+     /* 
+    const randonUserName = 'pepe' + crypto.randomUUID().slice(0, 8)
+    const password = 'R4andom123..*'
+    const employeeToSearch = 'Qwerty LName'
+    */
+   
+   
+    /*const userToAdd: UserModel = {
 
         username : randonUserName,
         employee : employeeToSearch,
@@ -204,29 +219,13 @@ test('Add new user', async({page})=>{
         confirmPassword : password,
         role :'ESS',
         status : 'Enabled'
-    }
-    
-    const addNewUser = new AddNewUserPage(page)
-    await addNewUser.addNewUser(userToAdd)
-    await addNewUser.checkUserWasAdded()
+    }*/
 
-   
-
+ 
 
 
 
 })
-
-
-
-
-
-
-
-
-
-
-
 
 
 

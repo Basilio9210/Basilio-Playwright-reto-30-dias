@@ -22,13 +22,14 @@ export class AddNewUserPage {
     .locator('div.oxd-select-text-input')
     .click()
     
-    await this.page.getByText(userRole, {exact: true}).click()
+    //await this.page.getByText(userRole, {exact: true}).click()
+    await this.page.getByRole('option', {name: userRole}).click()
     }
 
     async selectEmployee(employeeName: string){
         
     await this.page.getByRole('textbox', {name: 'Type for hints...'}).fill(employeeName)
-    await this.page.getByText('Qwerty Qwerty LName', {exact: true}).click()
+    await this.page.getByText(employeeName, {exact: true}).click()
 
     }
 

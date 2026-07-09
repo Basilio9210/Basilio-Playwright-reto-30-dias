@@ -29,7 +29,7 @@ export class AddNewUserPage {
     async selectEmployee(employeeName: string){
         
     await this.page.getByRole('textbox', {name: 'Type for hints...'}).fill(employeeName)
-    await this.page.getByText(employeeName, {exact: true}).click()
+    await this.page.getByText(employeeName, {exact: false}).click()
 
     }
 

@@ -56,15 +56,14 @@ export default defineConfig({
 
 
     },
-    /*{ name: 'employee',
+    { name: 'employee',
       dependencies: ['setup'],
       use: { ...devices['Desktop Chrome'],
         storageState: '.auth/admin.json'
        }
 
 
-    },*/
-    
+    },    
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },

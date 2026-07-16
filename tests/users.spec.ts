@@ -7,6 +7,7 @@ import { Navigate } from "../pageobjectmodel/Navigate"
 import { AddNewUserPage } from "../pageobjectmodel/AddNewUser"
 import { UserModel } from "../Models/UserModel"
 import { UserFactory } from "../Factory/UserFactory"
+import { UserTable } from "../components/UserTable"
 
 test('Get all the usernames registered', async ({ page }) => {
 
@@ -296,22 +297,11 @@ test('Add new user Admin', async({page})=>{
     const topBarMenu = new TopBarMenu(page)
     await topBarMenu.userManagment.clickOnUserOption()
    
-    const allBodyRows = page.getByRole('table').getByRole('rowgroup').nth(1).getByRole('row')
+    const userTable = new UserTable(page)
+    await userTable.editFirstAdminOnTable()
 
-    //Filas  que contienen rol Admin
-    const currentAdminRows= allBodyRows.filter({
-        has: page.getByRole('cell').nth(2).getByText('Admin')
-    })
-
-    const FirstAdminToSearch = currentAdminRows.nth(0)
-    await expect(FirstAdminToSearch, 'No admin users found in the table').toHaveCount(1)
-
-    await FirstAdminToSearch.
-    locator('button').
-    filter({ has: page.locator(' i.bi-pencil-fill') }).click()
-
-    const fullUserToSearch = await page.getByRole('textbox', {name:'Type for hints...'}).inputValue()
-    console.log(`User to search ${fullUserToSearch}`)
+    const addNewUser = new AddNewUserPage(page)
+    const fullUserToSearch = await addNewUser.getEmployeeName()
 
     const adminUser = UserFactory.createAdmin({
            
@@ -319,8 +309,8 @@ test('Add new user Admin', async({page})=>{
     })
 
     await page.goBack() 
-    const addNewUser = new AddNewUserPage(page)
+    
     await addNewUser.addNewUser(adminUser)
-    await addNewUser.checkUserWasAdded()
+    await addNewUser.checkUserWasAdded() 
 
 })

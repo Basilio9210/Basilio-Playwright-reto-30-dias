@@ -47,21 +47,25 @@ export class UserTable {
     }
 
  async clickOnDeleteActionByUsername(username: string){
+
     const allBodyRows = this.getAllBodyRows()
-    const filterRowsByUserName = allBodyRows.filter({
+    const filterRowsByUserName = allBodyRows.filter(
+    {
         has: this.page.getByRole('cell').nth(1).getByText(username)
     })
 
     await expect(filterRowsByUserName, `No rows contain user name: ${username} were found`).toHaveCount(1)
 
-    await filterRowsByUserName.locator('.bi-trash').click()
+    await filterRowsByUserName.locator('button').filter({has:this.page.locator('bi-trahs')}).click()
+    
+   
 }
 
     
 
     async acceptToDeleteUser(){
 
-        await this.page.locator("//button[normalize-space()='Yes, Delete']").click()
+        await this.page.getByRole('button', {name: /Yes, Delete/}).click()
     } 
      
 

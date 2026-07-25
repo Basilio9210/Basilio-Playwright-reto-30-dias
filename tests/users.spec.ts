@@ -289,13 +289,7 @@ test('Calculate and Operate with all numeric values', async ({ page }) => {
 test('Add new user Admin', async({page})=>{
     
     const navigate = new Navigate(page)
-    await navigate.toDashboard()
-
-    const sidepanel = new Sidepanel(page)
-    await sidepanel.ClickOnOption(SideMenuOption.ADMIN)
-
-    const topBarMenu = new TopBarMenu(page)
-    await topBarMenu.userManagment.clickOnUserOption()
+    await navigate.toUsers()
    
     const userTable = new UserTable(page)
     await userTable.editFirstAdminOnTable()
@@ -312,5 +306,39 @@ test('Add new user Admin', async({page})=>{
     
     await addNewUser.addNewUser(adminUser)
     await addNewUser.checkUserWasAdded() 
+
+})
+
+
+test('Delete user Admin', async({page})=>{
+
+
+    //Arrange
+    const navigate = new Navigate(page)
+    await navigate.toUsers()
+   
+    const userTable = new UserTable(page)
+    await userTable.editFirstAdminOnTable()
+
+    const addNewUser = new AddNewUserPage(page)
+    const fullUserToSearch = await addNewUser.getEmployeeName()
+
+    const adminUser = UserFactory.createAdmin({
+           
+      employee: fullUserToSearch
+    })
+
+    await page.goBack() 
+    
+    await addNewUser.addNewUser(adminUser)
+    await addNewUser.checkUserWasAdded() 
+
+    //Act
+    await userTable.clickOnDeleteActionByUsername(adminUser.username)
+    await userTable.acceptToDeleteUser()
+
+
+    //Assert
+    await addNewUser.checkUserWasSuccessfullyDeletedMessage()
 
 })

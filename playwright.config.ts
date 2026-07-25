@@ -14,6 +14,7 @@ dotenv.config({ path: path.resolve(__dirname, '.env') });
 const isCI = !!((globalThis as any).process?.env?.CI);
 
 export default defineConfig({
+  timeout: 80_000,
   testDir: './tests',
   /* Run tests in files in parallel */
   fullyParallel: true,

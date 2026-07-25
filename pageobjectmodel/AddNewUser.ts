@@ -73,8 +73,13 @@ export class AddNewUserPage {
 
     async checkUserWasAdded(){
         
-            await expect (this.page.locator('p.oxd-text--toast-message'))
-            .toHaveText('Successfully Saved')
+            await expect (this.page.locator('p.oxd-text--toast-message')).toHaveText('Successfully Saved')
+    }
+
+    
+    async checkUserWasSuccessfullyDeletedMessage(){
+        
+            await expect (this.page.locator('p.oxd-text--toast-message')).toHaveText('Successfully Deleted', {timeout:30_000})
     }
 
     async addNewUser(user: UserModel){
@@ -96,7 +101,7 @@ export class AddNewUserPage {
 
     async getEmployeeName(): Promise<string>{
 
-        
+            await expect (this.page.getByRole('textbox', {name:'Type for hints...'})).toHaveValue(/\S/)
             const fullUserToSearch = await this.page.getByRole('textbox', {name:'Type for hints...'}).inputValue()
             console.log(`User to search ${fullUserToSearch}`)
             return fullUserToSearch

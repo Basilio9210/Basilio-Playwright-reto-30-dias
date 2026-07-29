@@ -1,4 +1,4 @@
-name: Playwright Tests
+name: Playwright Tests Updated
 on:
   push:
     branches: [ main, master ]
@@ -7,12 +7,16 @@ on:
 jobs:
   test:
     timeout-minutes: 60
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest,
+    environment: dev
+    env:
+      ADMIN_USERNAME: ${{vars.ADMIN_USERNAME}}
+      ADMIN_PASSWORD: ${{secrets.ADMIN_PASSWORD}}
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
       with:
-        node-version: 24
+        node-version: 22
     - name: Install dependencies
       run: npm ci
     - name: Install Playwright Browsers

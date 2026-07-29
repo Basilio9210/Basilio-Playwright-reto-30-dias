@@ -286,7 +286,7 @@ test('Calculate and Operate with all numeric values', async ({ page }) => {
 })
 
 
-test('Add new user Admin', async({page})=>{
+test('Add new user Admin @users' , async({page})=>{
     
     const navigate = new Navigate(page)
     await navigate.toUsers()

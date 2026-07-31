@@ -90,7 +90,7 @@ test('Show Invalid credentials', async ({ page }) => {
 
 });
 
-test('Check User Roles Options', async({page})=>{
+test('@WeB Check User Roles Options', async({page})=>{
 
 
     const expectedRoleOptions = [ '-- Select --', 'Admin', 'ESS']
@@ -238,7 +238,7 @@ test('Debug table structure', async ({ page }) => {
     console.log(tableHTML)
 });
 
-test('Calculate and Operate with all numeric values', async ({ page }) => {
+test('@web Calculate and Operate with all numeric values', async ({ page }) => {
 
     await page.goto('/web/index.php/claim/viewAssignClaim')
     const allBodyRows = page.getByRole('table').getByRole('rowgroup').nth(1).getByRole('row')
@@ -310,7 +310,7 @@ test('Add new user Admin @users' , async({page})=>{
 })
 
 
-test('Delete user Admin', async({page})=>{
+test('@Web Delete user Admin', async({page})=>{
 
 
     //Arrange

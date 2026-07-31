@@ -1,5 +1,12 @@
 name: Playwright Tests Updated
 on:
+  workflow_dispatch:
+    inputs:
+      grep:
+        description: "Optional field to filter the test of Playwright"
+        required: false
+        default: ''
+        type: string
   push:
     branches: [ main, master ]
   pull_request:
@@ -22,7 +29,16 @@ jobs:
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
     - name: Run Playwright tests
-      run: npx playwright test
+        
+      run:
+
+        if[-n "${{github.event.inputs.grep}}"]; then
+         npx playwright test --grep "${{github.event.inputs.grep}}" --project="admin"
+        else
+         npx playwright test --project="admin"
+        fi
+        
+
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:

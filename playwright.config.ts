@@ -40,7 +40,7 @@ export default defineConfig({
         slowMo: 1000,
       },
       screenshot: 'only-on-failure',
-      video: 'retain-on-failure'
+      video: 'off'
   },
 
   /* Configure projects for major browsers */

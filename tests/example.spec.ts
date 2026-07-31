@@ -7,7 +7,7 @@ test('has title', async ({ page }) => {
   await expect(page).toHaveTitle(/Playwright/);
 });
 
-test('get started link', async ({ page }) => {
+test('get started link but only in Dev', async ({ page }) => {
   await page.goto('https://playwright.dev/');
 
   // Click the get started link.

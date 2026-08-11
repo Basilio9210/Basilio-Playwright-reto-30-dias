@@ -18,7 +18,8 @@
   "homepage": "https://github.com/Basilio9210/Basilio-Playwright-reto-30-dias#readme",
   "devDependencies": {
     "@playwright/test": "^1.60.0",
-    "@types/node": "^25.9.2"
+    "@types/node": "^25.9.2",
+    "playwright": "^1.62.1"
   },
   "dependencies": {
     "dotenv": "^17.4.2"

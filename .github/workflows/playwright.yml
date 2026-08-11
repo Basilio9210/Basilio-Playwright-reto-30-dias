@@ -23,7 +23,7 @@ jobs:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
       with:
-        node-version: 22
+        node-version: lts/*
     - name: Install dependencies
       run: npm ci
     - name: Install Playwright Browsers
@@ -31,13 +31,15 @@ jobs:
     - name: Run Playwright tests
         
       run:
-
+        echo "Starting playwright test..."
+        echo "Project selected:$PROJECT"
+        echo "Playwright filter:$GREP"
         if[-n "${{github.event.inputs.grep}}"]; then
          npx playwright test --grep "${{github.event.inputs.grep}}" --project="admin"
         else
          npx playwright test --project="admin"
         fi
-        
+        echo "Starting playwright finished"
 
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}

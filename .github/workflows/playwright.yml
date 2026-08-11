@@ -39,7 +39,6 @@ jobs:
         else
          npx playwright test --project="admin"
         fi
-
         echo "Starting playwright finished"
 
     - uses: actions/upload-artifact@v4

@@ -1,3 +1,5 @@
+import process from "process"
+
 export class Environment {
     static get ADMIN_USERNAME(): string {
         return Environment.getRequired('ADMIN_USERNAME')
@@ -13,7 +15,7 @@ export class Environment {
     }
 
     private static getRequired(key: string): string {
-        const value = process.env[key as keyof NodeJS.ProcessEnv]
+        const value = (process.env as Record<string, string | undefined>)[key]
         if (!value) {
             throw new Error('Environment variable: ' + key + ' does not exist')
         }

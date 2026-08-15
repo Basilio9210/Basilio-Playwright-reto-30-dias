@@ -1,5 +1,10 @@
 name: Playwright Tests Updated
 on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
   workflow_dispatch:
     inputs:
       grep:
@@ -7,10 +12,14 @@ on:
         required: false
         default: ''
         type: string
-  push:
-    branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
+      project:
+        description: "Selecciona el proyecto Playwright"
+        required: true
+        default: "admin"
+        type: choice
+        options:
+          - admin
+          - employee
 jobs:
   test:
     timeout-minutes: 60
@@ -33,10 +42,11 @@ jobs:
       run:
 
         if[-n "${{github.event.inputs.grep}}"]; then
-         npx playwright test --grep "${{github.event.inputs.grep}}" --project="admin"
+         npx playwright test --grep "${{github.event.inputs.grep}}" --project="${{github.event.inputs.project}}"
         else
-         npx playwright test --project="admin"
+         npx playwright test --project="${{github.event.inputs.project}}"
         fi
+      
         
 
     - uses: actions/upload-artifact@v4

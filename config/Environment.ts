@@ -1,12 +1,19 @@
 export class Environment {
-    static readonly ADMIN_USERNAME = Environment.getRequired('ADMIN_USERNAME')
-    static readonly ADMIN_PASSWORD = Environment.getRequired('ADMIN_PASSWORD')
-
-    static readonly EMPLOYEE_USERNAME = Environment.getRequired('EMPLOYEE_USERNAME')
-    static readonly EMPLOYEE_PASSWORD = Environment.getRequired('EMPLOYEE_PASSWORD')
+    static get ADMIN_USERNAME(): string {
+        return Environment.getRequired('ADMIN_USERNAME')
+    }
+    static get ADMIN_PASSWORD(): string {
+        return Environment.getRequired('ADMIN_PASSWORD')
+    }
+    static get EMPLOYEE_USERNAME(): string {
+        return Environment.getRequired('EMPLOYEE_USERNAME')
+    }
+    static get EMPLOYEE_PASSWORD(): string {
+        return Environment.getRequired('EMPLOYEE_PASSWORD')
+    }
 
     private static getRequired(key: string): string {
-        const value = process.env[key]
+        const value = process.env[key as keyof NodeJS.ProcessEnv]
         if (!value) {
             throw new Error('Environment variable: ' + key + ' does not exist')
         }

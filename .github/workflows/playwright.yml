@@ -22,12 +22,14 @@ on:
           - employee
 jobs:
   test:
-    timeout-minutes: 60
-    runs-on: ubuntu-latest,
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
     environment: dev
     env:
       ADMIN_USERNAME: ${{vars.ADMIN_USERNAME}}
       ADMIN_PASSWORD: ${{secrets.ADMIN_PASSWORD}}
+      PROJECT: ${{github.event.inputs.project  || 'admin'}}
+      GREP: ${{github.event.inputs.grep || ''}}
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
@@ -37,17 +39,14 @@ jobs:
       run: npm ci
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
-    - name: Run Playwright tests
-        
-      run:
-
-        if[-n "${{github.event.inputs.grep}}"]; then
-         npx playwright test --grep "${{github.event.inputs.grep}}" --project="${{github.event.inputs.project}}"
+    - name: Run Playwright tests     
+      run: |
+        if [ -n "${{github.event.inputs.grep}}" ]; then
+         npx playwright test --grep "$GREP" --project="$PROJECT"
         else
-         npx playwright test --project="${{github.event.inputs.project}}"
+         npx playwright test --project="$PROJECT"
         fi
-      
-        
+              
 
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}

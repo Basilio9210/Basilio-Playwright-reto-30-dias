@@ -8,8 +8,8 @@ import { AddNewUserPage } from "../pageobjectmodel/AddNewUser"
 import { UserModel } from "../Models/UserModel"
 import { UserFactory } from "../Factory/UserFactory"
 import { UserTable } from "../components/UserTable"
-import path from "node:path"
 import { readFile } from "fs/promises"
+import * as path from 'path'
 
 test ('API Test Get All the Users', async ({page, request})=>{
 
@@ -17,7 +17,7 @@ test ('API Test Get All the Users', async ({page, request})=>{
     const authState = JSON.parse(await readFile(authFilePath, 'utf-8')) as {
         cookies?: Array <{name: string, value: string}>
     }
-    const orangeHrmCookie = authState.cookies?.find(cookie => cookie.name === 'orangehrm')
+    const orangeHrmCookie = authState.cookies?.find(cookie => cookie.name = 'orangehrm')
     expect (orangeHrmCookie, 'The orangehrm cookie was not found in the saved auth state').toBeTruthy()
 
     const cookieHeader =  `orangehrm=${orangeHrmCookie?.value}`
@@ -30,7 +30,7 @@ test ('API Test Get All the Users', async ({page, request})=>{
 
     expect (response.ok()).toBeTruthy()
     const bodyJson = await  response.json()
-    console.log(JSON.stringify(bodyJson))
+    console.log(JSON.stringify(await bodyJson))
 
 
 } )

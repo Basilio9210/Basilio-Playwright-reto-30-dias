@@ -17,7 +17,7 @@ test ('API Test Get All the Users', async ({page, request})=>{
     const authState = JSON.parse(await readFile(authFilePath, 'utf-8')) as {
         cookies?: Array <{name: string, value: string}>
     }
-    const orangeHrmCookie = authState.cookies?.find(cookie => cookie.name = 'orangehrm')
+    const orangeHrmCookie = authState.cookies?.find(cookie => cookie.name === 'orangehrm')
     expect (orangeHrmCookie, 'The orangehrm cookie was not found in the saved auth state').toBeTruthy()
 
     const cookieHeader =  `orangehrm=${orangeHrmCookie?.value}`
@@ -35,14 +35,13 @@ test ('API Test Get All the Users', async ({page, request})=>{
 
 } )
 
-
 test ('API Test Add a new User', async ({page, request})=>{
 
     const authFilePath = path.resolve(process.cwd(), '.auth', 'admin.json')
     const authState = JSON.parse(await readFile(authFilePath, 'utf-8')) as {
         cookies?: Array <{name: string, value: string}>
     }
-    const orangeHrmCookie = authState.cookies?.find(cookie => cookie.name = 'orangehrm')
+    const orangeHrmCookie = authState.cookies?.find(cookie => cookie.name === 'orangehrm')
     expect (orangeHrmCookie, 'The orangehrm cookie was not found in the saved auth state').toBeTruthy()
 
     const username = 'user' + crypto.randomUUID().slice(0, 20)
@@ -55,12 +54,12 @@ test ('API Test Add a new User', async ({page, request})=>{
             Accept: 'application/json'
         },
         data: {
-    "username": username,
-    "password": password,
-    "status": true,
-    "userRoleId": 1,
-    "empNumber": 116
-}
+            "username": username,
+            "password": password,
+            "status": true,
+            "userRoleId": 1,
+            "empNumber": 116
+        }
     })
 
     expect (response.ok()).toBeTruthy()
@@ -70,29 +69,64 @@ test ('API Test Add a new User', async ({page, request})=>{
 
 } )
 
-test ('API Test Get All the Users', async ({page, request})=>{
+test ('API Test Delete a User', async ({page, request})=>{
 
     const authFilePath = path.resolve(process.cwd(), '.auth', 'admin.json')
     const authState = JSON.parse(await readFile(authFilePath, 'utf-8')) as {
         cookies?: Array <{name: string, value: string}>
     }
-    const orangeHrmCookie = authState.cookies?.find(cookie => cookie.name = 'orangehrm')
+    const orangeHrmCookie = authState.cookies?.find(cookie => cookie.name === 'orangehrm')
     expect (orangeHrmCookie, 'The orangehrm cookie was not found in the saved auth state').toBeTruthy()
 
+    const username = 'user' + crypto.randomUUID().slice(0, 20)
+    const password = 'admin12345'
+
     const cookieHeader =  `orangehrm=${orangeHrmCookie?.value}`
-    const response = await request.get('https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/admin/users?limit=50&offset=0&sortField=u.userName&sortOrder=ASC', {
+
+    const createResponse = await request.post('https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/admin/users', {
         headers: {
             Cookie: cookieHeader,
             Accept: 'application/json'
+        },
+        data: {
+            "username": username,
+            "password": password,
+            "status": true,
+            "userRoleId": 1,
+            "empNumber": 116
         }
-    }) 
+    })
 
-    expect (response.ok()).toBeTruthy()
-    const bodyJson = await  response.json()
+    console.log('Status:', createResponse.status(), createResponse.statusText())
+    console.log('Body:', await createResponse.text())
+
+    expect (createResponse.ok()).toBeTruthy()
+    const bodyJson = await createResponse.json()
     console.log(JSON.stringify(await bodyJson))
 
+    const userId = bodyJson.data.id
+    console.log(`User Id: ${userId}`)
 
-} )
+const deleteResponse = await request.delete('https://opensource-demo.orangehrmlive.com/web/index.php/api/v2/admin/users', {
+    headers: {
+        Cookie: cookieHeader,
+        Accept: 'application/json'
+    },
+    data: {
+        "ids": [
+            userId
+        ]
+    }
+})
+
+    console.log('Status:', deleteResponse.status(), deleteResponse.statusText())
+    console.log('Body:', await deleteResponse.text())
+
+    expect(deleteResponse.ok()).toBeTruthy()
+    const UserdeleteResponseBody = await deleteResponse.json()
+    console.log(JSON.stringify(await UserdeleteResponseBody))
+
+})
 
 test('Get all the usernames registered', async ({ page }) => {
 
@@ -193,7 +227,6 @@ test('@WeB Check User Roles Options', async({page})=>{
     expect(currentUserRoleOptions).toEqual(expectedRoleOptions)
 });
 
-
 test(('Filter User Admin'), async({page})=>{
 
     const loginPage = new LoginPage(page)
@@ -228,7 +261,6 @@ test(('Filter User Admin'), async({page})=>{
     
 
 })
-
 
 test('Capture all numeric values', async ({ page }) => {
 
@@ -266,7 +298,6 @@ test('Capture all numeric values', async ({ page }) => {
     console.log("Total is: ", total)
 
 });
-
 
 test('Add new user', async({page})=>{
 
@@ -309,8 +340,6 @@ test('Add new user', async({page})=>{
 
 
 })
-
-
 
 test('Debug table structure', async ({ page }) => {
     await page.goto('/web/index.php/claim/viewAssignClaim')
@@ -370,7 +399,6 @@ test('@web Calculate and Operate with all numeric values', async ({ page }) => {
     expect(min).toBeCloseTo(0, 2)
 })
 
-
 test('Add new user Admin @users' , async({page})=>{
     
     const navigate = new Navigate(page)
@@ -393,7 +421,6 @@ test('Add new user Admin @users' , async({page})=>{
     await addNewUser.checkUserWasAdded() 
 
 })
-
 
 test('@Web Delete user Admin', async({page})=>{
 

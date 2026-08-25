@@ -10,10 +10,24 @@ import { UserFactory } from "../Factory/UserFactory"
 import { UserTable } from "../components/UserTable"
 import { readFile } from "fs/promises"
 import * as path from 'path'
+import { UserApiClient, CreateUserPayload } from '../API/UserApiClient'
 
-test ('API Test Get All the Users', async ({page, request})=>{
+test ('API Test Get All the Users', async ({request})=>{
+ 
+    const apiClient = await UserApiClient.fromSavedAuthState(request)
+    const response = await apiClient.getUsers()
 
-    const authFilePath = path.resolve(process.cwd(), '.auth', 'admin.json')
+    console.log('Status:', response.status(), response.statusText())
+    console.log('URL solicitada:', response.url())
+    console.log('Body:', await response.text())
+
+    expect(response.ok()).toBeTruthy()
+
+    const bodyJson = await response.json()
+    console.log(JSON.stringify(await bodyJson))
+    
+    
+    /*const authFilePath = path.resolve(process.cwd(), '.auth', 'admin.json')
     const authState = JSON.parse(await readFile(authFilePath, 'utf-8')) as {
         cookies?: Array <{name: string, value: string}>
     }
@@ -30,10 +44,55 @@ test ('API Test Get All the Users', async ({page, request})=>{
 
     expect (response.ok()).toBeTruthy()
     const bodyJson = await  response.json()
-    console.log(JSON.stringify(await bodyJson))
+    console.log(JSON.stringify(await bodyJson))*/
 
 
 } )
+
+test('API Test Add a new User refactored', async ({ request }) => {
+
+    const apiClient = await UserApiClient.fromSavedAuthState(request)
+
+    const newUser: CreateUserPayload = {
+        username: 'user' + crypto.randomUUID().slice(0, 20),
+        password: 'admin12345',
+        status: true,
+        userRoleId: 1,
+        empNumber: 116
+    }
+
+    const response = await apiClient.createUser(newUser)
+
+    expect(response.ok()).toBeTruthy()
+    const bodyJson = await response.json()
+    console.log(JSON.stringify(bodyJson))
+})
+
+test('API Test Delete a User refactored', async ({ request }) => {
+
+    const apiClient = await UserApiClient.fromSavedAuthState(request)
+
+    const newUser: CreateUserPayload = {
+        username: 'user' + crypto.randomUUID().slice(0, 20),
+        password: 'admin12345',
+        status: true,
+        userRoleId: 1,
+        empNumber: 116
+    }
+
+    const createResponse = await apiClient.createUser(newUser)
+    expect(createResponse.ok()).toBeTruthy()
+
+    const bodyJson = await createResponse.json()
+    const userId = bodyJson.data.id
+    console.log(`User Id: ${userId}`)
+
+    const deleteResponse = await apiClient.deleteUser(userId)
+    expect(deleteResponse.ok()).toBeTruthy()
+
+    const userDeleteResponseBody = await deleteResponse.json()
+    console.log(JSON.stringify(userDeleteResponseBody))
+})
 
 test ('API Test Add a new User', async ({page, request})=>{
 

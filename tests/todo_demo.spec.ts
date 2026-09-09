@@ -1,0 +1,37 @@
+import { test, expect } from '@playwright/test';
+
+test('test TodoMVC @SanityTest', async ({ page }) => {
+  await page.goto('https://todomvc.com/examples/react/dist/');
+  await page.getByTestId('text-input').click();
+  await page.getByTestId('text-input').press('CapsLock');
+  await page.getByTestId('text-input').fill('R');
+  await page.getByTestId('text-input').press('CapsLock');
+  await page.getByTestId('text-input').fill('Run');
+  await page.getByTestId('text-input').press('Enter');
+  await page.getByTestId('text-input').press('CapsLock');
+  await page.getByTestId('text-input').fill('W');
+  await page.getByTestId('text-input').press('CapsLock');
+  await page.getByTestId('text-input').fill('Walk outside');
+  await page.getByTestId('text-input').press('Enter');
+  await page.getByTestId('text-input').press('CapsLock');
+  await page.getByTestId('text-input').fill('R');
+  await page.getByTestId('text-input').press('CapsLock');
+  await page.getByTestId('text-input').fill('Read ');
+  await page.getByTestId('text-input').press('CapsLock');
+  await page.getByTestId('text-input').fill('Read B');
+  await page.getByTestId('text-input').press('CapsLock');
+  await page.getByTestId('text-input').fill('Read Books');
+  await page.getByTestId('text-input').press('Enter');
+  await page.getByTestId('text-input').press('CapsLock');
+  await page.getByTestId('text-input').fill('P');
+  await page.getByTestId('text-input').press('CapsLock');
+  await page.getByTestId('text-input').fill('Play');
+  await page.getByTestId('text-input').press('Enter');
+  await page.getByRole('listitem').filter({ hasText: 'Run' }).getByTestId('todo-item-toggle').check();
+  await expect(page.getByText('Run')).toBeVisible();
+  await page.getByRole('listitem').filter({ hasText: 'Read Books' }).getByTestId('todo-item-toggle').check();
+  await expect(page.getByTestId('todo-list')).toContainText('Read Books');
+  await page.getByRole('link', { name: 'Active' }).click();
+  await page.getByRole('button', { name: 'Clear completed' }).click();
+  await page.getByRole('link', { name: 'All' }).click();
+});

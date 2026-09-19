@@ -1,57 +1,24 @@
-name: Playwright Tests Updated
-
+name: Playwright Tests
 on:
   push:
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
-    
-  workflow_dispatch:
-    inputs:
-      grep:
-        description: "Optional field to filter the test of Playwright"
-        required: false
-        default: ''
-        type: string
-      project:
-        description: "Selecciona el proyecto Playwright"
-        required: true
-        default: "admin"
-        type: choice
-        options:
-          - admin
-          - employee
 jobs:
   test:
-    timeout-minutes: 10
+    timeout-minutes: 60
     runs-on: ubuntu-latest
-    environment: dev
-    env:
-      ADMIN_USERNAME: ${{vars.ADMIN_USERNAME}}
-      ADMIN_PASSWORD: ${{secrets.ADMIN_PASSWORD}}
-      PROJECT: ${{github.event.inputs.project  || 'admin'}}
-      GREP: ${{github.event.inputs.grep || ''}}
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
       with:
-        node-version: 22
+        node-version: lts/*
     - name: Install dependencies
       run: npm ci
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
-    - name: Run Playwright tests     
-      run: |
-       echo "Starting playwright test"
-       echo "Project selected: $PROJECT"
-       echo "Playwright filter: $GREP"
-        if [ -n "${{github.event.inputs.grep}}" ]; then
-         npx playwright test --grep "$GREP" --project="$PROJECT"
-        else
-         npx playwright test --project="$PROJECT"
-        fi
-        echo "Starting playwright test"
-        echo "Playwright test fisnished"
+    - name: Run Playwright tests
+      run: npx playwright test
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:

@@ -1,9 +1,9 @@
 import { test } from '@playwright/test';
-import { TodoPage } from '../pageobjectmodel/Todopage';
+import { TodoPage } from '../pageobjectmodel/TodoPage';
 
 test('test TodoMVC @SanityTest', async ({ page }) => {
   const todos = ['Run', 'Walk outside', 'Read Books', 'Play'];
-  const todoPage = new TodoPage(page);
+  const todoPage  = new TodoPage(page);
 
   await todoPage.goto();
   await todoPage.addTodos(todos);

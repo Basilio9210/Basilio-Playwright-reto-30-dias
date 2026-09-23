@@ -3,6 +3,7 @@ import { LoginPage } from '../pageobjectmodel/LoginPage';
 import { TopBarMenu } from '../components/top-bar-menu/TopBarMenu';
 import { SideMenuOption, Sidepanel } from '../components/Sidepanel';
 
+
 test('Check Menu Options', async ({ page }) => {
 
     // Navegar a la página de inicio de sesión

@@ -21,6 +21,11 @@ jobs:
       run: npx playwright install --with-deps
     - name: Run Playwright tests
       run: npx playwright test --project=chromium
+      env:
+        ADMIN_USERNAME: ${{ secrets.ADMIN_USERNAME }}
+        ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+        EMPLOYEE_USERNAME: ${{ secrets.EMPLOYEE_USERNAME }}
+        EMPLOYEE_PASSWORD: ${{ secrets.EMPLOYEE_PASSWORD }}
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:

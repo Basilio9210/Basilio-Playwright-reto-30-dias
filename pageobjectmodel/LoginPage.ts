@@ -9,6 +9,7 @@ export class LoginPage{
     readonly loginButton: Locator
     readonly errorMessage: Locator
    
+    
     constructor(page: Page) {
         
         this.page = page

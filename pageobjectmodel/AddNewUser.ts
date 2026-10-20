@@ -16,6 +16,24 @@ export class AddNewUserPage {
         await this.page.getByText('Add').click()
     }
 
+    private async selectDropdown(label: string, value: string) {
+
+    await this.page.locator('div.oxd-grid-item--gutters')
+        .filter({ has: this.page.getByText(label) })
+        .locator('div.oxd-select-text-input')
+        .click()
+
+    await this.page.getByRole('option', { name: value }).click()
+}
+
+    async selectUserRole(userRole: string) {
+    await this.selectDropdown('User Role', userRole)
+}
+
+async selectStatus(status: string) {
+    await this.selectDropdown('Status', status)
+}
+    
     async selectUserRole(userRole:string){
     await this.page.locator('div.oxd-grid-item--gutters')
     .filter({has: this.page.getByText('User Role')})
@@ -38,7 +56,7 @@ export class AddNewUserPage {
     .filter({has: this.page.getByText('Status')})
     .locator('div.oxd-select-text-input')
     .click()
-    await this.page.getByText('Enabled').click()
+    await this.page.getByRole('option', { name: status }).click()
     }
 
     async enterUserName(username: string){
@@ -92,10 +110,6 @@ export class AddNewUserPage {
     await this.enterPassword(user.password)
     await this.enterConfirmPassword(user.confirmPassword)
     await this.clickOnSave()
-
-    }
-
-    async addValidUser(){
 
     }
 

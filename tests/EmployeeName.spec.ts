@@ -17,14 +17,15 @@ test('Get all the Employee Names registered', async ({ page }) => {
     const rows = page.getByRole('table').getByRole('row')
     const employeeNames: string[] = []
     const rowCount = await rows.count()
-    for (let i = 1; i < rowCount; i++) {
-
-        const cell = rows.nth(i).getByRole('cell').nth(3)
-        const employeeName = await cell.textContent()   
-        if (employeeName) {
-            employeeNames.push(employeeName)
-        }
+let i = 1
+while (i < rowCount) {
+    const cell = rows.nth(i).getByRole('cell').nth(3)
+    const employeeName = await cell.textContent()
+    if (employeeName) {
+        employeeNames.push(employeeName)
     }
+    i++
+}
 
     console.log(employeeNames)  
 

@@ -17,8 +17,8 @@ test("buying new products", async ({ page }) => {
   await shoppingCart.checkout();
   await shoppingCart.fillCustomerDetails(
     "Basilio Saldarriaga",
-    "basilio9210@hotmail.com",
-    "Cr 71 # 27-106",
+    "basilio92100000@outlook.com",
+    "Cr 23 nro 45-66",
   );
   await shoppingCart.openPaymentInfo();
   await shoppingCart.fillPaymentDetails("1111222233334444", "12/29", "123");
